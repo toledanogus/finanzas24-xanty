@@ -22,6 +22,7 @@ export const GeneralesPage = () => {
   const [checkedItems, setCheckedItems] = useState(new Set());
   //const [total1, setTotal1] = useState(0);
   const [total2, setTotal2] = useState(0);
+  const [total3, setTotal3] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [datosCargados, setDatosCargados] = useState(false);
   const [mesLocalStorage, setMesLocalStorage] = useState("1Enero");
@@ -59,6 +60,16 @@ export const GeneralesPage = () => {
       return total;
     }, 0);
     setTotal2(suma);
+  };
+  const sumarTotal3 = () => {
+    // eslint-disable-next-line no-unused-vars
+    const suma = conceptos.reduce((total, [, cantidad, pagado]) => {
+      if (pagado === 1) {
+        return total + cantidad;
+      }
+      return total;
+    }, 0);
+    setTotal3(suma);
   };
 
   const enviarPagados = async () => {
@@ -111,6 +122,12 @@ export const GeneralesPage = () => {
   useEffect(() => {
     if (conceptos !== 1) {
       sumarTotal2();
+    }
+  }, [conceptos]);
+
+  useEffect(() => {
+    if (conceptos !== 1) {
+      sumarTotal3();
     }
   }, [conceptos]);
 
@@ -182,9 +199,15 @@ export const GeneralesPage = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td className="total">Total</td>
+            <td className="total">Total Pendiente</td>
             <td className="total">
               {total2 && total2 ? `$${total2.toLocaleString()}` : null}
+            </td>
+          </tr>
+          <tr>
+            <td className="total">Total Pagado</td>
+            <td className="total">
+              {total3 && total3 ? `$${total3.toLocaleString()}` : null}
             </td>
           </tr>
           <tr>
